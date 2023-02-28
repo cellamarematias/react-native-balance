@@ -13,9 +13,11 @@ import {
   View,
   ActivityIndicator
 } from 'react-native';
-import SizedBox from '../../components/SizeBox';
-import { useLazyGetUserQuery } from '../../redux/login/login';
+import SizedBox from '../components/SizeBox';
+import { useLazyGetUserQuery } from '../redux/login/login';
 import { Controller, useForm } from 'react-hook-form';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 interface FormData {
   usuario: string;
@@ -35,14 +37,20 @@ export default function Login({ navigation }) {
   });
 
   const onSubmit = handleSubmit(({ usuario, password }) => {
-
     const user = {
       usuario: usuario, password
     };
-
     trigger(user);
-
   });
+
+  const storeData = async (data) => {
+    try {
+      await AsyncStorage.setItem('user', data.user)
+      await AsyncStorage.setItem('token', data.token)
+    } catch (e) {
+      // saving error
+    }
+  }
 
   if (isFetching) {
     return (
@@ -58,7 +66,7 @@ export default function Login({ navigation }) {
   }
 
   if (isSuccess) {
-    console.log('success');
+    storeData(data)
     navigation.navigate('Home');
   }
 
@@ -71,7 +79,7 @@ export default function Login({ navigation }) {
         >
 
           <View style={styles.container}>
-            <Image style={styles.logo} source={require('../../../assets/icono.png')}></Image>
+            <Image style={styles.logo} source={require('../../assets/icono.png')}></Image>
           </View>
 
           <Text style={styles.title}>Hola!</Text>

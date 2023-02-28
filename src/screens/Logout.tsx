@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Button, View, Text } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import BottomNavigation from '../components/bottomNavigation';
 
 
-export default function Home({ navigation }) {
-
-  const [token, setToken] = useState('');
+export default function LogOut({ navigation }) {
 
   useEffect(() => {
     getData();
@@ -26,8 +23,6 @@ export default function Home({ navigation }) {
       console.log('Error retrieving data' + error);
     }
   };
-
-
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
