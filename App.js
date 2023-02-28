@@ -1,20 +1,30 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+//RTK
+import { store } from './src/redux/store.js';
+import { Provider } from 'react-redux';
+
+import Home from './src/screens/Home.jsx';
+import Tareas from './src/screens/Tareas.jsx';
+import Login from './src/screens/login/Login.tsx';
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Login">
+          <Stack.Screen name="Login" component={Login} options={{ title: '', headerStyle: {
+            backgroundColor: 'black', headerTintColor: '#ffff',
+          } }} />
+          <Stack.Screen name="Home" component={Home} options={{ title: 'Gastos' }} />
+          <Stack.Screen name="Tareas" component={Tareas} options={{ title: 'Tareas' }} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
+
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
