@@ -18,7 +18,6 @@ import { useLazyGetUserQuery } from '../redux/login/login';
 import { Controller, useForm } from 'react-hook-form';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
 interface FormData {
   usuario: string;
   password: string;
