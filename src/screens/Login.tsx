@@ -14,9 +14,11 @@ import {
   ActivityIndicator
 } from 'react-native';
 import SizedBox from '../components/SizeBox';
-import { useLazyGetUserQuery } from '../redux/login/login';
-import { Controller, useForm } from 'react-hook-form';
+import { useLazyGetUserQuery } from "../store/api/loginApi";
+import { Controller, set, useForm } from 'react-hook-form';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useDispatch } from 'react-redux';
+import { authenticate, setEmail, setUser } from '../store/slices/authSlice';
 
 interface FormData {
   usuario: string;
@@ -24,9 +26,11 @@ interface FormData {
 }
 
 export default function Login({ navigation }) {
+  const dispatch = useDispatch();
+
   const usuarioInput = React.useRef<TextInput>(null);
   const passwordInput = React.useRef<TextInput>(null);
-  const [trigger, { data, isSuccess, isError, isFetching }] = useLazyGetUserQuery(data);
+  const [getUser, { data, isSuccess, isError, isFetching }] = useLazyGetUserQuery(data);
 
   const { control, handleSubmit } = useForm<FormData>({
     defaultValues: {
@@ -39,7 +43,22 @@ export default function Login({ navigation }) {
     const user = {
       usuario: usuario, password
     };
-    trigger(user);
+
+    // Aquí llamamos a la API para hacer la autenticación
+    // El endpoint de la API se definiría con loginApi.getUser()
+    // Utilizamos los valores de email y password del estado local
+    // Luego, si la autenticación es exitosa, dispatch(setUser())
+
+    getUser(user).unwrap()
+      .then((result) => {
+        const user = {
+          user: result.user,
+          token: result.token,
+          isAuthenticated: true
+        }
+        dispatch(setUser(user))
+      })
+      .catch((err) => console.log(err))
   });
 
   const storeData = async (data) => {

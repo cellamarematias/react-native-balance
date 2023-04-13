@@ -1,31 +1,28 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { Button, View, Text, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { useDispatch } from 'react-redux';
+import { deauthenticate } from '../store/slices/authSlice';
 
 export default function LogOut({ navigation }) {
+  const dispatch = useDispatch()
 
-  const logout = () => {
-    AsyncStorage.removeItem('user');
-    AsyncStorage.removeItem('token');
-    navigation.replace('Login');
+  const handleLogout = async () => {
+    console.log('saliendo')
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const unsubscribe = navigation.addListener('tabPress', (e) => {
-      // Prevent default behavior
       e.preventDefault();
-
       Alert.alert('Cerrando sesión', 'Seguro que desea cerrar la sesión?', [
         {
           text: 'No',
           onPress: () => console.log('Cancel Pressed'),
           style: 'cancel',
         },
-        {text: 'Si', onPress: () =>logout()},
+        { text: 'Si', onPress: handleLogout },
       ]);
     });
-
     return unsubscribe;
   }, [navigation]);
 

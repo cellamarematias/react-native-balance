@@ -1,42 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store/store';
 
 
 export default function Home({ navigation }) {
-
-  const [user, setUser] = useState('');
-
-  useEffect(() => {
-    try {
-      AsyncStorage.getItem('user',(err,item) => {
-        if (item) {
-          setUser(item);
-        } else {
-          navigation.navigate('Login');
-        }
-      });
-    } catch (error) {
-      console.log('Error retrieving data' + error);
-    }
-    console.log(user);
-
-  }, [user]);
-  
-
-  // const getData = async () => {
-  //   try {
-  //     AsyncStorage.getItem('user',(err,item) => {
-  //       if (item) {
-  //         setUser(item);
-  //       } else {
-  //         navigation.navigate('Login');
-  //       }
-  //     });
-  //   } catch (error) {
-  //     console.log('Error retrieving data' + error);
-  //   }
-  // };
 
   return (
     <View style={styles.main}>
